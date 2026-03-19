@@ -26,7 +26,7 @@ PluginSettings {
     StringSetting {
         settingKey: "command"
         label: "Command"
-        description: "Shell command to run (e.g. ~/.config/DankMaterialShell/plugins/IntervalCommand/uptime-compact.sh)"
+        description: "Shell command to run (e.g. ~/.config/DankMaterialShell/plugins/intervalCommand/uptime-compact.sh)"
         defaultValue: ""
     }
 
