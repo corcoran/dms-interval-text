@@ -8,7 +8,7 @@ Run any shell command and show the result in your bar with a [Material Design ic
 
 ```sh
 # Clone into your DMS plugins directory
-git clone https://github.com/corcoran/dank-interval-text ~/.config/DankMaterialShell/plugins/IntervalText
+git clone https://github.com/corcoran/dms-interval-text ~/.config/DankMaterialShell/plugins/IntervalText
 
 # Reload
 dms ipc call plugins reload intervalTextPlugin
@@ -17,7 +17,7 @@ dms ipc call plugins reload intervalTextPlugin
 Or symlink during development:
 
 ```sh
-ln -sf ~/path/to/dank-interval-text ~/.config/DankMaterialShell/plugins/IntervalText
+ln -sf ~/path/to/dms-interval-text ~/.config/DankMaterialShell/plugins/IntervalText
 ```
 
 ## Settings
@@ -33,7 +33,7 @@ ln -sf ~/path/to/dank-interval-text ~/.config/DankMaterialShell/plugins/Interval
 | **Popout Width** | Width of the popout panel in pixels (200–1920) | `600` |
 | **Popout Max Height** | Maximum height of the popout panel in pixels (100–1080) | `450` |
 
-Popout settings are hidden until **Popout Enabled** is checked. ANSI color codes are automatically stripped from popout output.
+Bar display shows the first line of command output, truncated to 30 characters. Popout settings are hidden until **Popout Enabled** is checked. ANSI escape codes are automatically stripped from popout output.
 
 ## Examples
 

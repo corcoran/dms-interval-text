@@ -39,6 +39,7 @@ PluginComponent {
             onRead: data => {
                 if (!captured) {
                     let line = data.trim();
+                    if (line === "") return;
                     if (line.length > 30) {
                         line = line.substring(0, 30);
                     }
@@ -64,15 +65,13 @@ PluginComponent {
     // Process to run the click command and capture full output for popout
     Process {
         id: popoutProcess
-        command: ["sh", "-c", root.clickCommand + " | sed 's/\\x1b\\[[0-9;]*m//g'; echo"]
+        command: ["sh", "-c", root.clickCommand + " | sed 's/\\x1b\\[[0-9;?]*[a-zA-Z]//g; s/\\x1b\\][^\\x07]*\\x07//g'; echo"]
         running: false
 
         stdout: SplitParser {
             property string buffer: ""
             onRead: data => {
-                if (data.trim() !== "") {
-                    buffer = buffer === "" ? data : buffer + "\n" + data;
-                }
+                buffer = buffer === "" ? data : buffer + "\n" + data;
             }
         }
 
