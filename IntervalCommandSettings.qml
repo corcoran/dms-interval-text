@@ -5,11 +5,11 @@ import qs.Modules.Plugins
 
 PluginSettings {
     id: root
-    pluginId: "intervalTextPlugin"
+    pluginId: "intervalCommandPlugin"
 
     StyledText {
         width: parent.width
-        text: "Interval Text Settings"
+        text: "Interval Command Settings"
         font.pixelSize: Theme.fontSizeLarge
         font.weight: Font.Bold
         color: Theme.surfaceText
@@ -26,7 +26,7 @@ PluginSettings {
     StringSetting {
         settingKey: "command"
         label: "Command"
-        description: "Shell command to run (e.g. ~/.config/DankMaterialShell/plugins/IntervalText/uptime-compact.sh)"
+        description: "Shell command to run (e.g. ~/.config/DankMaterialShell/plugins/IntervalCommand/uptime-compact.sh)"
         defaultValue: ""
     }
 
