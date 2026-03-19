@@ -8,7 +8,7 @@ Run any shell command and show the result in your bar with a [Material Design ic
 
 ```sh
 # Clone into your DMS plugins directory
-git clone https://github.com/corcoran/dms-interval-command ~/.config/DankMaterialShell/plugins/IntervalCommand
+git clone https://github.com/corcoran/dms-interval-command ~/.config/DankMaterialShell/plugins/intervalCommand
 
 # Reload
 dms ipc call plugins reload intervalCommandPlugin
@@ -17,7 +17,7 @@ dms ipc call plugins reload intervalCommandPlugin
 Or symlink during development:
 
 ```sh
-ln -sf ~/path/to/dms-interval-command ~/.config/DankMaterialShell/plugins/IntervalCommand
+ln -sf ~/path/to/dms-interval-command ~/.config/DankMaterialShell/plugins/intervalCommand
 ```
 
 ## Settings
@@ -41,7 +41,7 @@ Bar display shows the first line of command output, truncated to 30 characters. 
 
 **Uptime** (using the included helper script):
 
-- Command: `~/.config/DankMaterialShell/plugins/IntervalCommand/uptime-compact.sh`
+- Command: `~/.config/DankMaterialShell/plugins/intervalCommand/uptime-compact.sh`
 - Icon: `schedule`
 
 **Memory usage:**
@@ -59,7 +59,7 @@ Bar display shows the first line of command output, truncated to 30 characters. 
 
 ![Click command popout](screenshots/onclick.jpg)
 
-- Command: `~/.config/DankMaterialShell/plugins/IntervalCommand/uptime-compact.sh`
+- Command: `~/.config/DankMaterialShell/plugins/intervalCommand/uptime-compact.sh`
 - Icon: `schedule`
 - Click Command: `uprecords -s`
 - Popout Enabled: checked
