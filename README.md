@@ -22,7 +22,7 @@ ln -sf ~/path/to/dms-interval-command ~/.config/DankMaterialShell/plugins/interv
 
 ## Settings
 
-![Settings](screenshots/settings.jpg)
+![Settings](screenshots/settings.png)
 
 Click **Add Widget** to create a new widget. Each widget appears in the bar as a separate instance with its own settings:
 
@@ -75,7 +75,7 @@ Bar display shows the first line of command output, truncated to 50 characters. 
 
 **Uptime records popout:**
 
-![Click command popout](screenshots/onclick.jpg)
+![Click command popout](screenshots/screenshot.png)
 
 - Command: `~/.config/DankMaterialShell/plugins/intervalCommand/uptime-compact.sh`
 - Icon: `schedule`
