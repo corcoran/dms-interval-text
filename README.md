@@ -46,13 +46,28 @@ Bar display shows the first line of command output, truncated to 30 characters. 
 
 **Memory usage:**
 
-- Command: `free -h | awk '/Mem:/{print $3}'`
+- Command: `free -h | awk '/Mem:/{print $3"/"$2}'`
 - Icon: `memory`
 
-**Hostname:**
+**Arch updates** (gettin' fancy 😉):
 
-- Command: `hostname`
-- Icon: `computer`
+- Command: `n=$(checkupdates 2>/dev/null | wc -l); [ "$n" -eq 0 ] && echo "up to date" || echo "$n update$([ "$n" -ne 1 ] && echo s)"`
+- Icon: `system_update`
+- Refresh Interval: `300`
+- Click Command: `checkupdates`
+- Popout Enabled: checked
+- Popout Refresh Interval: `300`
+
+**VPN status:**
+
+- Command: `ip link show tun0 >/dev/null 2>&1 && echo "VPN Up" || echo "VPN Down"`
+- Icon: `vpn_lock`
+- Refresh Interval: `30`
+
+**Public IP:**
+
+- Command: `curl -s ifconfig.me`
+- Icon: `language`
 - Refresh Interval: `300`
 
 **Uptime records popout:**

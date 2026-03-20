@@ -82,13 +82,14 @@ PluginComponent {
             property string buffer: ""
             onRead: data => {
                 buffer = buffer === "" ? data : buffer + "\n" + data;
+                root.popoutText = buffer.replace(/\n+$/, "");
             }
         }
 
         onRunningChanged: {
             if (!running) {
                 let text = popoutProcess.stdout.buffer.replace(/\n+$/, "");
-                root.popoutText = text || "No output";
+                root.popoutText = text || root.popoutText || "No output";
             }
         }
     }
@@ -177,13 +178,25 @@ PluginComponent {
                 popoutTimer.running = false;
             }
 
-            Text {
+            Flickable {
+                id: popoutFlickable
                 width: parent.width
-                text: root.popoutText || "Running..."
-                font.pixelSize: Theme.fontSizeSmall
-                font.family: "monospace"
-                color: Theme.surfaceText
-                wrapMode: Text.WordWrap
+                height: Math.min(popoutTextItem.implicitHeight, root.popoutHeight)
+                contentWidth: width
+                contentHeight: popoutTextItem.implicitHeight
+                clip: true
+                flickableDirection: Flickable.VerticalFlick
+                boundsBehavior: Flickable.StopAtBounds
+
+                Text {
+                    id: popoutTextItem
+                    width: popoutFlickable.width
+                    text: root.popoutText || "Running..."
+                    font.pixelSize: Theme.fontSizeSmall
+                    font.family: "monospace"
+                    color: Theme.surfaceText
+                    wrapMode: Text.WordWrap
+                }
             }
         }
     }
