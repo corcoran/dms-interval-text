@@ -8,25 +8,45 @@ import qs.Modules.Plugins
 PluginComponent {
     id: root
 
-    // Settings
-    property string command: pluginData.command || ""
-    property string iconName: pluginData.icon || "info"
-    property int refreshInterval: (pluginData.refreshInterval || 10) * 1000
-    property string clickCommand: pluginData.clickCommand || ""
-    property bool popoutEnabled: pluginData.popoutEnabled || false
-    property int popoutRefreshInterval: (pluginData.popoutRefreshInterval || 5) * 1000
+    // Variant properties — set by WidgetHost at instantiation (not reactive)
+    property var variantId: null
+    property var variantData: null
+
+    // Config resolution: variant → base → hardcoded default
+    // Uses ?? (nullish coalescing) not || to correctly handle falsy values (0, false, "")
+    property string command: (variantData?.command ?? pluginData.command ?? "").replace(/[\r\n]+/g, " ").trim()
+    property string iconName: variantData?.icon ?? pluginData.icon ?? "info"
+    property int refreshInterval: ((variantData?.refreshInterval ?? pluginData.refreshInterval ?? 10)) * 1000
+    property string clickCommand: (variantData?.clickCommand ?? pluginData.clickCommand ?? "").replace(/[\r\n]+/g, " ").trim()
+    property bool popoutEnabled: variantData?.popoutEnabled ?? pluginData.popoutEnabled ?? false
+    property int popoutRefreshInterval: ((variantData?.popoutRefreshInterval ?? pluginData.popoutRefreshInterval ?? 5)) * 1000
 
     // State
     property string outputText: command === "" ? "No command set" : "..."
     property string popoutText: ""
 
     onCommandChanged: {
+        if (commandProcess.running) {
+            commandProcess.killed = true;
+            commandProcess.running = false;
+        }
         if (command === "") {
             outputText = "No command set";
         } else {
             outputText = "...";
+            commandProcess.hasEverCaptured = false;
             commandProcess.stdout.captured = false;
             commandProcess.running = true;
+        }
+    }
+
+    // Re-fetch variant data when settings change (variantData from WidgetHost is not reactive)
+    Connections {
+        target: pluginService
+        function onPluginDataChanged(changedPluginId) {
+            if (changedPluginId === root.pluginId && root.variantId) {
+                root.variantData = pluginService.getPluginVariantData(root.pluginId, root.variantId);
+            }
         }
     }
 
@@ -50,19 +70,23 @@ PluginComponent {
                 if (!captured) {
                     let line = data.trim();
                     if (line === "") return;
-                    if (line.length > 30) {
-                        line = line.substring(0, 30);
+                    if (line.length > 50) {
+                        line = line.substring(0, 50);
                     }
                     root.outputText = line;
                     captured = true;
+                    commandProcess.hasEverCaptured = true;
                 }
             }
         }
 
+        property bool killed: false
+        property bool hasEverCaptured: false
         onRunningChanged: {
-            if (!running && !commandProcess.stdout.captured) {
+            if (!running && !killed && !commandProcess.stdout.captured && hasEverCaptured) {
                 root.outputText = "N/A";
             }
+            killed = false;
         }
     }
 
@@ -117,6 +141,10 @@ PluginComponent {
         triggeredOnStart: true
         onTriggered: {
             if (root.command !== "") {
+                if (commandProcess.running) {
+                    commandProcess.killed = true;
+                    commandProcess.running = false;
+                }
                 commandProcess.stdout.captured = false;
                 commandProcess.running = true;
             }
@@ -163,8 +191,8 @@ PluginComponent {
         }
     }
 
-    popoutWidth: pluginData.popoutWidth || 600
-    popoutHeight: pluginData.popoutHeight || 450
+    popoutWidth: variantData?.popoutWidth ?? pluginData.popoutWidth ?? 600
+    popoutHeight: variantData?.popoutHeight ?? pluginData.popoutHeight ?? 450
 
     popoutContent: Component {
         PopoutComponent {

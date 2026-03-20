@@ -2,7 +2,7 @@
 
 A [DankMaterialShell](https://danklinux.com) bar widget that runs commands at configurable intervals and displays their output.
 
-Run any shell command and show the result in your bar with a [Material Design icon](https://fonts.google.com/icons).
+Run any shell command and show the result in your bar with a [Material Design icon](https://fonts.google.com/icons). Add as many widgets as you want — each one has its own command, icon, interval, and popout settings.
 
 ## Install
 
@@ -24,9 +24,12 @@ ln -sf ~/path/to/dms-interval-command ~/.config/DankMaterialShell/plugins/interv
 
 ![Settings](screenshots/settings.jpg)
 
+Click **Add Widget** to create a new widget. Each widget appears in the bar as a separate instance with its own settings:
+
 | Setting | Description | Default |
 |---------|-------------|---------|
-| **Command** | Shell command to run | *(empty — shows "Configure me")* |
+| **Name** | Display name (shown in DMS "Add Widget" menu) | `Widget 1` |
+| **Command** | Shell command to run | *(empty)* |
 | **Icon** | Material Design icon name | `info` |
 | **Refresh Interval** | Seconds between runs (1–300) | `10` |
 | **Click Command** | Command to run when widget is clicked | *(empty)* |
@@ -35,7 +38,7 @@ ln -sf ~/path/to/dms-interval-command ~/.config/DankMaterialShell/plugins/interv
 | **Popout Width** | Width of the popout panel in pixels (200–1920) | `600` |
 | **Popout Max Height** | Maximum height of the popout panel in pixels (100–1080) | `450` |
 
-Bar display shows the first line of command output, truncated to 30 characters. Popout settings are hidden until **Popout Enabled** is checked. ANSI escape codes are automatically stripped from popout output.
+Bar display shows the first line of command output, truncated to 50 characters. Popout settings are hidden until **Popout Enabled** is checked. ANSI escape codes are automatically stripped from popout output.
 
 ## Examples
 

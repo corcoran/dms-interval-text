@@ -2,10 +2,11 @@
   "id": "intervalCommand",
   "name": "Interval Command",
   "description": "Run commands at configurable intervals and display their output",
-  "version": "0.2.0",
+  "version": "0.9.0",
   "author": "corcoran",
   "icon": "terminal",
   "component": "./IntervalCommandWidget.qml",
   "settings": "./IntervalCommandSettings.qml",
+  "capabilities": ["variants"],
   "permissions": ["settings_read", "settings_write"]
 }
