@@ -34,10 +34,10 @@ PluginComponent {
             outputText = "No command set";
         } else {
             outputText = "...";
-            commandProcess.hasEverCaptured = false;
-            commandProcess.stdout.captured = false;
-            commandProcess.running = true;
         }
+        // Restart the refresh timer so it runs the new command immediately (triggeredOnStart)
+        // and resets the interval counter
+        refreshTimer.restart();
     }
 
     // Re-fetch variant data when settings change (variantData from WidgetHost is not reactive)
@@ -135,6 +135,7 @@ PluginComponent {
 
     // Timer to periodically execute the command
     Timer {
+        id: refreshTimer
         interval: root.refreshInterval
         running: root.command !== ""
         repeat: true
