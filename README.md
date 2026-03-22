@@ -30,7 +30,7 @@ Click **Add Widget** to create a new widget. Each widget appears in the bar as a
 |---------|-------------|---------|
 | **Name** | Display name (shown in DMS "Add Widget" menu) | `Widget 1` |
 | **Command** | Shell command to run | *(empty)* |
-| **Icon** | Material Design icon name | `info` |
+| **Icon** | Material Design icon name (fuzzy-searchable dropdown) | `info` |
 | **Refresh Interval** | Seconds between runs (1–300) | `10` |
 | **Use Accent Color** | Colors the widget icon with your theme's accent color | `false` |
 | **Click Command** | Command to run when widget is clicked | *(empty)* |

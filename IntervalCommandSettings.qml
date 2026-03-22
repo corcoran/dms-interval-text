@@ -3,10 +3,13 @@ import qs.Common
 import qs.Services
 import qs.Widgets
 import qs.Modules.Plugins
+import "icons.js" as Icons
 
 PluginSettings {
     id: root
     pluginId: "intervalCommand"
+
+    property var iconNames: Icons.names
 
     // Track selected widget index in the variants array
     property int selectedIndex: 0
@@ -22,7 +25,10 @@ PluginSettings {
         _syncing = true;
         nameField.text = selectedVariant.name ?? "";
         commandField.text = selectedVariant.command ?? "";
-        iconField.text = selectedVariant.icon ?? "info";
+        // HACK: DankDropdown doesn't clear searchField.text on reopen (upstream bug)
+        // Recreating via Loader is the only way to reset internal state
+        iconDropdownLoader.active = false;
+        iconDropdownLoader.active = true;
         accentToggle.checked = selectedVariant.useAccentColor ?? false;
         clickCommandField.text = selectedVariant.clickCommand ?? "";
         refreshSlider.value = selectedVariant.refreshInterval ?? 10;
@@ -365,35 +371,38 @@ PluginSettings {
             }
         }
 
-        // Icon
-        Column {
+        // Icon — wrapped in Loader to work around DankDropdown not clearing
+        // search field text on reopen (upstream bug). Toggling active destroys
+        // and recreates the dropdown, resetting all internal state.
+        Loader {
+            id: iconDropdownLoader
             width: parent.width
-            spacing: Theme.spacingXS
-
-            StyledText {
+            active: true
+            sourceComponent: DankDropdown {
                 text: "Icon"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
-            }
-
-            StyledText {
-                text: "Material Design icon name — browse at fonts.google.com/icons"
-                font.pixelSize: Theme.fontSizeXSmall
-                color: Theme.surfaceVariantText
-                wrapMode: Text.WordWrap
-                width: parent.width
-            }
-
-            DankTextField {
-                id: iconField
-                width: parent.width
-                text: root.selectedVariant?.icon ?? "info"
-                placeholderText: "info"
-                onTextEdited: root.debounceSave("icon", text, iconField)
-                onEditingFinished: root.flushPendingSave()
+                description: "Material Design icon name"
+                enableFuzzySearch: true
+                dropdownWidth: 280
+                options: root.iconNames
+                optionIcons: root.iconNames
+                currentValue: root.selectedVariant?.icon ?? "info"
+                onValueChanged: value => {
+                    if (root.selectedVariant) root.selectedVariant.icon = value;
+                    root.saveField("icon", value);
+                    iconReloadTimer.restart();
+                }
             }
         }
 
+        // HACK: Delayed recreate after icon selection (see Loader comment above)
+        Timer {
+            id: iconReloadTimer
+            interval: 100
+            onTriggered: {
+                iconDropdownLoader.active = false;
+                iconDropdownLoader.active = true;
+            }
+        }
         // Accent Color Toggle
         DankToggle {
             id: accentToggle
